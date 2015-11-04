@@ -1,6 +1,6 @@
 {
   "name": "sudoc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a wrapper around sudoc webservices",
   "main": "index.js",
   "scripts": {
