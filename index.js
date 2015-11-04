@@ -5,14 +5,15 @@ let baseUrl = 'http://www.sudoc.fr/services';
 
 function query(service, params, callback) {
 
-  params = Array.isArray(params) ? params.join(',') : params || '';
+  let arrayQuery = Array.isArray(params);
+  params = arrayQuery ? params.join(',') : params || '';
 
   let options = {
     uri: encodeURI(`${baseUrl}/${service}/${params}`),
     headers: { 'Accept': 'text/json' }
   };
 
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     request.get(options, (err, res, body) => {
       if (err) { return reject(err); }
 
@@ -26,6 +27,10 @@ function query(service, params, callback) {
 
       if (sudoc.error) {
         return reject(new Error(sudoc.error));
+      }
+
+      if (arrayQuery && !Array.isArray(sudoc)) {
+        sudoc = [sudoc];
       }
 
       resolve(sudoc);
