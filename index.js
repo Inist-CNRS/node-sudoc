@@ -12,22 +12,32 @@ function query(service, params, callback) {
     headers: { 'Accept': 'text/json' }
   };
 
-  request.get(options, (err, res, body) => {
-    if (err) { return callback(err); }
+  return new Promise(function (resolve, reject) {
+    request.get(options, (err, res, body) => {
+      if (err) { return reject(err); }
 
-    let sudoc;
+      let sudoc;
 
-    try {
-      sudoc = JSON.parse(body).sudoc;
-    } catch (e) {
-      return callback(e);
-    }
+      try {
+        sudoc = JSON.parse(body).sudoc;
+      } catch (e) {
+        return reject(e);
+      }
 
-    if (sudoc.error) {
-      return callback(new Error(sudoc.error));
-    }
+      if (sudoc.error) {
+        return reject(new Error(sudoc.error));
+      }
 
-    callback(null, sudoc);
+      resolve(sudoc);
+    });
+  })
+  .then(sudoc => {
+    if (typeof callback === 'function') { callback(null, sudoc); }
+    return sudoc;
+  })
+  .catch(err => {
+    if (typeof callback === 'function') { callback(err); }
+    throw err;
   });
 }
 
