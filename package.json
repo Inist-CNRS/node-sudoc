@@ -1,0 +1,29 @@
+{
+  "name": "sudoc",
+  "version": "1.0.0",
+  "description": "a wrapper around sudoc webservices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezpaarse-project/node-sudoc.git"
+  },
+  "keywords": [
+    "sudoc",
+    "issn",
+    "isbn",
+    "ppn"
+  ],
+  "author": "ezPAARSE Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ezpaarse-project/node-sudoc/issues"
+  },
+  "homepage": "https://github.com/ezpaarse-project/node-sudoc#readme",
+  "dependencies": {
+    "request": "^2.65.0"
+  },
+  "devDependencies": {}
+}
