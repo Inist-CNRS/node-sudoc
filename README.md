@@ -10,7 +10,7 @@ A wrapper around sudoc web services
 
 ### Callback-style
 ```javascript
-  var sudoc = require('sudoc');
+  let sudoc = require('sudoc');
   
   sudoc.issn2ppn('0182-2012', (err, result) => {
     console.log(result); // { query: { issn: '0182-2012', result: { ppn: '001014692' } } }
@@ -27,7 +27,7 @@ A wrapper around sudoc web services
 
 ### Promise-style
 ```javascript
-  var sudoc = require('sudoc');
+  let sudoc = require('sudoc');
 
   sudoc.issn2ppn('0182-2012').then(result => {
     console.log(result); // { query: { issn: '0182-2012', result: { ppn: '001014692' } } }
