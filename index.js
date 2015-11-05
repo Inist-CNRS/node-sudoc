@@ -13,7 +13,7 @@ function query(service, params, callback) {
     headers: { 'Accept': 'text/json' }
   };
 
-  return new Promise((resolve, reject) => {
+  let promise = new Promise((resolve, reject) => {
     request.get(options, (err, res, body) => {
       if (err) { return reject(err); }
 
@@ -35,18 +35,23 @@ function query(service, params, callback) {
 
       resolve(sudoc);
     });
-  })
-  .then(sudoc => {
-    if (typeof callback === 'function') { callback(null, sudoc); }
-    return sudoc;
-  })
-  .catch(err => {
-    if (typeof callback === 'function') { callback(err); }
-    throw err;
   });
+
+  if (typeof callback === 'function') {
+    promise.then(sudoc => {
+      callback(null, sudoc);
+      return sudoc;
+    })
+    .catch(err => {
+      callback(err);
+      throw err;
+    });
+  }
+
+  return promise;
 }
 
-['issn2ppn', 'isbn2ppn', 'ean2ppn'].forEach((service) => {
+['issn2ppn', 'isbn2ppn', 'ean2ppn'].forEach(service => {
   exports[service] = function (params, callback) {
     return query(service, params, callback);
   };
