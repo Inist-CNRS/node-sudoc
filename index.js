@@ -13,46 +13,38 @@ function query(service, params, callback) {
     headers: { 'Accept': 'text/json' }
   };
 
-  let promise = new Promise((resolve, reject) => {
-    request.get(options, (err, res, body) => {
-      if (err) { return reject(err); }
+  request.get(options, (err, res, body) => {
+    if (err) { return callback(err); }
 
-      let sudoc;
+    let sudoc;
 
-      try {
-        sudoc = JSON.parse(body).sudoc;
-      } catch (e) {
-        return reject(e);
-      }
+    try {
+      sudoc = JSON.parse(body).sudoc;
+    } catch (e) {
+      return callback(e);
+    }
 
-      if (sudoc.error) {
-        return reject(new Error(sudoc.error));
-      }
+    if (sudoc.error) {
+      return callback(new Error(sudoc.error));
+    }
 
-      if (arrayQuery && !Array.isArray(sudoc)) {
-        sudoc = [sudoc];
-      }
+    if (arrayQuery && !Array.isArray(sudoc)) {
+      sudoc = [sudoc];
+    }
 
-      resolve(sudoc);
-    });
+    callback(null, sudoc);
   });
-
-  if (typeof callback === 'function') {
-    promise.then(sudoc => {
-      callback(null, sudoc);
-      return sudoc;
-    })
-    .catch(err => {
-      callback(err);
-      throw err;
-    });
-  }
-
-  return promise;
 }
 
 ['issn2ppn', 'isbn2ppn', 'ean2ppn'].forEach(service => {
   exports[service] = function (params, callback) {
-    return query(service, params, callback);
+    if (typeof callback === 'function') { return query(service, params, callback); }
+
+    return new Promise((resolve, reject) => {
+      query(service, params, (err, sudoc) => {
+        if (err) { return reject(err); }
+        resolve(sudoc);
+      });
+    });
   };
 });
