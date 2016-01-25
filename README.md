@@ -1,5 +1,6 @@
 # node-sudoc
-A wrapper around sudoc web services
+
+A nodejs wrapper around sudoc web services (issn2ppn, isbn2ppn, ean2ppn)
 
 ## Installation
 ```shell
