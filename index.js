@@ -25,7 +25,7 @@ function query(service, params, callback) {
     }
 
     if (sudoc.error) {
-      return callback(new Error(sudoc.error));
+      return callback(null, null);
     }
 
     if (arrayQuery && !Array.isArray(sudoc)) {
